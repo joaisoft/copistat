@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tu App — Landing limpia (fondo blanco)</title>
+  <meta name="description" content="Landing moderna, accesible y responsive para vender tu app. Header adaptable, menú móvil con accesibilidad, footer diferenciado, formulario mejorado y más secciones de valor." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="canonical" href="https://www.tu-dominio.com/" />
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Tu App — Claro, directo y rápido" />
+  <meta property="og:description" content="Presenta tu app con una landing limpia: héroe, cómo funciona, beneficios, precios, testimonios y contacto." />
+  <meta property="og:image" content="assets/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <style>
+    /* =====================================================
+       Sistema de diseño — claro por defecto
+       ===================================================== */
+    :root{
+      --bg:#ffffff;           /* Fondo principal */
+      --fg:#0b0b10;           /* Texto principal */
+      --fg-2:#2a2a33;         /* Texto secundario */
+      --muted:#5b5b66;        /* Texto atenuado */
+      --line:#e8e8ef;         /* Líneas/cards */
+      --card:#ffffff;         /* Fondo tarjetas */
+      --accent:#0f62fe;       /* Azul accesible */
+      --accent-2:#0043ce;     /* Azul oscuro */
+      --accent-3:#a6c8ff;     /* Azul claro */
+      --footer-bg:#0b1220;    /* Footer diferenciado (oscuro) */
+      --footer-fg:#eef2ff;    /* Texto en footer */
+      --success:#0e8a00;
+      --radius:16px;
+      --radius-lg:22px;
+      --shadow-sm:0 1px 3px rgba(0,0,0,.06);
+      --shadow-md:0 8px 30px rgba(0,0,0,.08);
+      --space-1:10px; --space-2:16px; --space-3:22px; --space-4:28px; --space-5:42px; --space-6:64px; --space-7:96px;
+      --container:1180px;
+    }
+    *,*::before,*::after{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0; background:var(--bg); color:var(--fg);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial;
+      line-height:1.55; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    img{ max-width:100%; display:block; }
+    a{ color:inherit; text-decoration:none; }
+    .container{ width:min(var(--container), 92vw); margin-inline:auto; }
+
+    /* Tipografía utilitaria */
+    .eyebrow{ color:var(--accent-2); text-transform:uppercase; letter-spacing:.18em; font-weight:800; font-size:.8rem; }
+    .title-xxl{ font-size:clamp(2rem, 5.4vw, 4.2rem); line-height:1.04; margin:0 0 var(--space-3); }
+    .title-xl{ font-size:clamp(1.8rem, 3.6vw, 2.6rem); margin:.1rem 0 .7rem; }
+    .lead{ font-size:clamp(1.05rem, 2.1vw, 1.3rem); color:var(--fg-2); margin:0; }
+    /* evita saltos al cambiar palabra del titular */
+    .changing-word{ display:inline; min-width:0; color:var(--accent); transition:opacity .25s ease; }
+    .muted{ color:var(--muted); }
+
+    /* Botones */
+    .btn{ display:inline-flex; align-items:center; gap:10px; border:1px solid var(--line); border-radius:999px; padding:12px 18px; font-weight:800; box-shadow:var(--shadow-sm); }
+    .btn--accent{ background:var(--accent); color:#fff; border-color:var(--accent); }
+    .btn--accent:hover{ background:var(--accent-2); border-color:var(--accent-2); }
+    .btn--ghost{ background:#fff; color:var(--fg); }
+    .btn--ghost:hover{ border-color:#d9d9e3; }
+    .btn--link{ padding:0; border:none; color:var(--accent-2); font-weight:800; }
+    .btn--inverted{ background:#fff; color:var(--accent-2); border-color:transparent; }
+
+    /* Header responsive con menú accesible */
+    header.site{ position:sticky; top:0; z-index:90; background:rgba(255,255,255,.9); backdrop-filter:saturate(140%) blur(6px); border-bottom:1px solid var(--line); }
+    .nav{ display:flex; align-items:center; justify-content:space-between; padding:12px 0; }
+    .brand{ display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:.2px; }
+    .brand__logo{ inline-size:28px; block-size:28px; border-radius:8px; background:linear-gradient(135deg, var(--accent), var(--accent-3)); box-shadow:0 2px 10px rgba(15,98,254,.2); }
+
+    /* Menú desktop */
+    .nav__links{ display:flex; gap:10px; align-items:center; }
+
+    /* Toggle móvil */
+    .nav__toggle{ display:none; background:none; border:none; padding:10px; border-radius:10px; }
+    .nav__toggle[aria-expanded="true"]{ outline:2px solid var(--accent); }
+    .nav__toggle svg{ width:26px; height:26px; }
+
+    /* Drawer móvil */
+    .drawer{ position:fixed; inset:0 0 0 auto; width:min(88vw, 420px); max-width:100%; background:#fff; border-left:1px solid var(--line); transform:translateX(100%); transition:transform .25s ease; z-index:99; display:flex; flex-direction:column; }
+    .drawer.is-open{ transform:none; }
+    .drawer__head{ display:flex; align-items:center; justify-content:space-between; padding:14px; border-bottom:1px solid var(--line); }
+    .drawer__links{ display:grid; gap:10px; padding:16px; }
+    .drawer__overlay{ position:fixed; inset:0; background:rgba(0,0,0,.28); backdrop-filter:blur(2px); opacity:0; pointer-events:none; transition:opacity .2s; z-index:98; }
+    .drawer__overlay.is-open{ opacity:1; pointer-events:auto; }
+
+    @media (max-width: 980px){
+      .nav__links{ display:none; }
+      .nav__toggle{ display:inline-flex; }
+    }
+
+    /* Hero claro con imagen */
+    .hero{ position:relative; padding:var(--space-7) 0 var(--space-6); }
+    /* Extra separación específica en el hero */
+    .hero .title-xxl{ margin-bottom: var(--space-4); }
+    .hero__grid{ display:grid; grid-template-columns:1.1fr .9fr; gap:var(--space-5); align-items:center; }
+    @media (max-width: 980px){ .hero__grid{ grid-template-columns:1fr; } }
+    .hero .ctaRow{ display:flex; gap:12px; flex-wrap:wrap; margin-top:var(--space-3); }
+    .phoneMock{ /* Sin contorno ni fondo */
+  background:transparent !important;
+  padding:0 !important;
+  border:none !important;
+  border-radius:0 !important;
+  overflow:visible !important;
+  box-shadow:none !important;
+  max-width:300px; margin-inline:auto; display:inline-block; }
+
+
+    .phoneMock img{ display:block; width:100%; height:auto; border-radius:0 !important; background:transparent !important; }
+@media (max-width: 980px){ .phoneMock{ max-width:260px; } }
+@media (min-width: 1200px){ .phoneMock{ max-width:340px; } }
+@media (max-width: 980px){ .phoneMock{ max-width:260px; } }
+@media (min-width: 1200px){ .phoneMock{ max-width:340px; } }
+    @media (max-width: 980px){ .phoneMock{ max-width:260px; } }
+    @media (min-width: 1200px){ .phoneMock{ max-width:340px; } }
+
+    /* Franja de logos (confianza) */
+    .trust{ padding:var(--space-4) 0; border-block:1px solid var(--line); background:#fafafe; }
+    .logos{ display:grid; grid-template-columns:repeat(6,1fr); gap:var(--space-3); align-items:center; }
+    .logos img{ max-height:28px; width:auto; margin-inline:auto; filter:grayscale(1) contrast(1.2) brightness(.7); }
+    @media (max-width: 980px){ .logos{ grid-template-columns:repeat(3,1fr); } }
+
+    /* Sección cómo funciona */
+    section.how{ padding:var(--space-6) 0; }
+    .how__grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-3); }
+    @media (max-width: 980px){ .how__grid{ grid-template-columns:1fr; } }
+    .step{ border:1px solid var(--line); border-radius:var(--radius); background:#fff; padding:var(--space-3); display:flex; gap:16px; align-items:flex-start; box-shadow:var(--shadow-sm); }
+    .step svg{ flex:0 0 34px; color:var(--accent-2); }
+
+    /* Beneficios */
+    section.features{ padding:var(--space-6) 0; background:#fff; }
+    .features__grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-3); }
+    @media (max-width: 980px){ .features__grid{ grid-template-columns:1fr; } }
+    .card{ border:1px solid var(--line); border-radius:var(--radius); background:#fff; padding:var(--space-3); box-shadow:var(--shadow-sm); }
+    .card h3{ margin:.2rem 0 .4rem; }
+    .card p{ margin:0; color:var(--muted); }
+
+    /* Comparativa */
+    section.compare{ padding:var(--space-6) 0; background:#fafafe; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .table{ width:100%; border-collapse:collapse; font-size:.98rem; }
+    .table th,.table td{ border:1px solid var(--line); padding:12px 14px; text-align:left; }
+    .table th{ background:#f4f6ff; }
+    .table .ok{ color:var(--success); font-weight:800; }
+
+    /* Banda imagen 
+    .band{ position:relative; border-block:1px solid var(--line); }
+    .band img{ width:100%; height:80svh; object-fit:cover; display:block; }*/
+
+    /* Precios */
+    section.pricing{ padding:var(--space-6) 0; }
+    .pricing__grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-3); align-items:stretch; }
+    @media (max-width: 1080px){ .pricing__grid{ grid-template-columns:1fr; } }
+    .plan{ border:1px solid var(--line); border-radius:var(--radius-lg); background:#fff; padding:var(--space-4); display:flex; flex-direction:column; gap:14px; box-shadow:var(--shadow-md); }
+    .price{ font-size:2.2rem; font-weight:900; }
+    .features-list{ list-style:none; padding:0; margin:0; display:grid; gap:8px; color:var(--muted); }
+
+    /* Testimonios */
+    section.testimonials{ padding:var(--space-6) 0; background:#fff; }
+    .quotes{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-3); }
+    @media (max-width: 980px){ .quotes{ grid-template-columns:1fr; } }
+    .quote{ border:1px solid var(--line); border-radius:var(--radius); background:#fff; padding:var(--space-3); box-shadow:var(--shadow-sm); }
+    .quote footer{ margin-top:10px; color:var(--muted); font-weight:700; }
+
+    /* FAQ */
+    section.faq{ padding:var(--space-6) 0; background:#fafafe; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .faq__grid{ display:grid; grid-template-columns:1fr 1fr; gap:var(--space-3); }
+    @media (max-width: 980px){ .faq__grid{ grid-template-columns:1fr; } }
+    details{ border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; background:#fff; box-shadow:var(--shadow-sm); }
+    details+details{ margin-top:12px; }
+    summary{ cursor:pointer; font-weight:900; }
+    details p{ color:var(--muted); margin:.6rem 0 0; }
+
+    /* Contacto — formulario mejorado */
+    section.contact{ padding:var(--space-6) 0; background:#fff; }
+    .contact__grid{ display:grid; grid-template-columns:1.1fr .9fr; gap:var(--space-4); }
+    @media (max-width: 980px){ .contact__grid{ grid-template-columns:1fr; } }
+    form.form{ display:grid; gap:14px; }
+    .field{ display:grid; gap:6px; }
+    .label{ font-weight:700; font-size:.95rem; color:var(--fg-2); }
+    .input, .select, .textarea{
+      width:100%; background:#fff; color:var(--fg);
+      border:1px solid var(--line); border-radius:12px; padding:12px 14px;
+      transition:border-color .2s ease, box-shadow .2s ease;
+    }
+    .textarea{ min-height:120px; resize:vertical; }
+    .input:focus, .select:focus, .textarea:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 4px rgba(15,98,254,.12); }
+    .error{ color:#c91919; font-size:.9rem; }
+    .success{ color:var(--success); font-weight:800; }
+    .card-side{ border:1px solid var(--line); border-radius:var(--radius); padding:var(--space-3); background:#fff; box-shadow:var(--shadow-sm); }
+
+    /* Footer diferenciado (oscuro) */
+    footer{ color:var(--footer-fg); background:var(--footer-bg); }
+    footer .wrap{ padding:var(--space-6) 0; border-bottom:1px solid rgba(255,255,255,.08); }
+    .footgrid{ display:grid; grid-template-columns:2fr 1fr 1fr; gap:var(--space-4); }
+    @media (max-width: 980px){ .footgrid{ grid-template-columns:1fr; } }
+    .footlinks{ list-style:none; padding:0; margin:0; display:grid; gap:10px; }
+    .footlinks a{ color:#c7d2fe; }
+    .footlinks a:hover{ color:#fff; text-decoration:underline; }
+    .subfooter{ color:#cbd5e1; padding:var(--space-3) 0; }
+
+    /* Utilidades */
+    .section-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:10px; margin-bottom:var(--space-3); }
+    .badges{ display:flex; gap:10px; flex-wrap:wrap; }
+    .toTop{ position:fixed; right:16px; bottom:16px; z-index:80; display:none; }
+  </style>
+</head>
+<body>
+    
+  
+
+  <!-- ======================== NAV ======================== -->
+  <header class="site" role="banner">
+    <div class="container nav">
+      <div class="brand" aria-label="marca">
+        <span class="brand__logo" aria-hidden="true"></span><span><a href="#inicio" class="visually-hidden">COPISTAT</a></span>
+      </div>
+
+      <!-- Desktop links -->
+      <nav class="nav__links" aria-label="principal">
+        <a class="btn btn--ghost" href="#como-funciona">Cómo funciona</a>
+        <a class="btn btn--ghost" href="#caracteristicas">Características</a>
+        <a class="btn btn--ghost" href="#precios">Precios</a>
+        <a class="btn btn--ghost" href="#contacto">Contacto</a>
+        <a class="btn btn--accent" href="#descargas">Obtener Copistat</a>
+      </nav>
+
+      <!-- Mobile toggle -->
+      <button class="nav__toggle" aria-controls="drawer" aria-expanded="false" aria-label="Abrir menú">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Drawer móvil -->
+  <div class="drawer__overlay" id="overlay" hidden></div>
+  <aside class="drawer" id="drawer" aria-hidden="true" aria-label="Menú">
+    <div class="drawer__head">
+      <div class="brand"><span class="brand__logo" aria-hidden="true"></span><span>Tu App</span></div>
+      <button class="nav__toggle" id="closeDrawer" aria-label="Cerrar menú">✕</button>
+    </div>
+    <nav class="drawer__links">
+      <a class="btn btn--ghost" href="#como-funciona">¿Cómo funciona?</a>
+      <a class="btn btn--ghost" href="#caracteristicas">Características</a>
+      <a class="btn btn--ghost" href="#precios">Precios</a>
+      <a class="btn btn--ghost" href="#contacto">Contacto</a>
+      <a class="btn btn--accent" href="#descargas">OBTNER COPISTAT</a>
+    </nav>
+  </aside>
+
+  <!-- ======================== HERO ======================== -->
+  <section class="hero" id="inicio" aria-label="presentación">
+    <div class="container hero__grid">
+      <div class="col">
+        <h1 class="title-xxl">Imprime tus documentos de manera <span id="changing-word" class="changing-word">limpia</span> y olvídate del correo electrónico </h1>
+        <p class="lead">Si te preocupa la privacidad de tus archivos a la hora de imprimir, <b>COPISTAT</b> es la solución. Una vez impresos tus archivos desaparcen automáticamente garantizando tu <b>PRIVADACIDAD Y SEGURIDAD</b>.</p>
+        <div class="ctaRow">
+          <a href="#descargas" class="btn btn--accent">Obtener Copistat</a>
+          <a href="#caracteristicas" class="btn btn--ghost">Beneficios para tí</a>
+        </div>
+
+      </div>
+      <div class="col" style="display:flex; justify-content:center;">
+        <div class="phoneMock" aria-hidden="false">
+          <picture>
+            <source type="image/avif" srcset="imgmovil.png" />
+            <source type="image/webp" srcset="imgmovil.webp" />
+            <img src="imgmovil.png" alt="Vista previa de la app en un móvil" loading="eager" decoding="async" />
+          </picture>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== TRUST ======================== 
+  <section class="trust" aria-label="confían en nosotros">
+    <div class="container">
+      <div class="logos">
+        <img src="assets/logo-1.svg" alt="Marca 1" />
+        <img src="assets/logo-2.svg" alt="Marca 2" />
+        <img src="assets/logo-3.svg" alt="Marca 3" />
+        <img src="assets/logo-4.svg" alt="Marca 4" />
+        <img src="assets/logo-5.svg" alt="Marca 5" />
+        <img src="assets/logo-6.svg" alt="Marca 6" />
+      </div>
+    </div>
+  </section>-->
+
+  <!-- ======================== CÓMO FUNCIONA ======================== -->
+  <section class="how" id="como-funciona">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="title-xl">¿Cómo funciona?</h2>
+      </div>
+      <div class="how__grid">
+        <div class="step">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5Zm0 7L2 4m10 5 10-5m-10 5v10" stroke="currentColor" stroke-width="1.5"/></svg>
+          <div>
+            <h3>Crea tu cuenta</h3>
+            <p class="muted">Regístrate en segundos y accede al panel.</p>
+          </div>
+        </div>
+        <div class="step">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="1.5"/></svg>
+          <div>
+            <h3>Configura en minutos</h3>
+            <p class="muted">Guías dentro de la app y ajustes sugeridos.</p>
+          </div>
+        </div>
+        <div class="step">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/></svg>
+          <div>
+            <h3>Listo para escalar</h3>
+            <p class="muted">Empieza y mide el impacto con reportes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== BENEFICIOS ======================== -->
+  <section class="features" id="caracteristicas">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="title-xl">Beneficios clave</h2>
+      </div>
+      <div class="features__grid" role="list">
+        <article class="card" role="listitem"><h3>PRIVACIDAD Y SEGURIDAD PARA EL CLIENTE</h3><p>Tus clientes tendrán una garantia de privacidad y seguridad ya que todo archivo se elimina automáticamte después de ser impresos. En el caso que no se impriman se eliminarán a los tres minutos.</p></article>
+        <article class="card" role="listitem"><h3>ADIÓS A LA SATURACÍON DEL CORREO</h3><p>Dí adiós a la saturación del correo electrónico a la hora que tus clientes te envien sus archivos.</p></article>
+        <article class="card" role="listitem"><h3>ADIOS PROBLEMAS POR CORREOS MAL INTRODUCIDOS O CON FALLOS DE ENTREGA.</h3><p>Tus clientes se olvidarán de los errores de correo: si la dirección está mal escrita o el mensaje tarda en llegar, el sistema detecta el problema y evita que se pierda la información importante.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== COMPARATIVA ======================== -->
+  <section class="compare" aria-label="comparativa de ventajas">
+    <div class="container">
+      <h2 class="title-xl">¿Por qué elegirnos?</h2>
+      <p class="muted">Una comparación sencilla frente a alternativas genéricas.</p>
+      <div style="overflow:auto; margin-top:var(--space-3);">
+        <table class="table" role="table" aria-label="tabla comparativa">
+          <thead><tr><th>Características</th><th>Tu App</th><th>Alternativa A</th><th>Alternativa B</th></tr></thead>
+          <tbody>
+            <tr><td>Instalación en 1 min</td><td class="ok">✔</td><td>—</td><td>—</td></tr>
+            <tr><td>Importación de datos</td><td class="ok">✔</td><td>✔</td><td>—</td></tr>
+            <tr><td>Soporte en español</td><td class="ok">✔</td><td>—</td><td>✔</td></tr>
+            <tr><td>Planes sencillos</td><td class="ok">✔</td><td>—</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== BANDA IMAGEN ======================== 
+  <section class="band" aria-label="imagen a pantalla completa">
+    <picture>
+      <source type="image/avif" srcset="foto2.png" />
+      <source type="image/webp" srcset="assets/full-image.webp" />
+      <img src="foto2.png" alt="Imagen del producto en uso" loading="lazy" decoding="async" />
+    </picture>
+  </section>-->
+
+  <!-- ======================== PRECIOS ======================== -->
+  <section class="pricing container" id="precios" aria-label="planes y precios">
+    <div class="section-head">
+      <h2 class="title-xl">Elige tu plan</h2>
+      <a class="btn btn--link" href="#contacto">¿Dudas? Hablemos →</a>
+    </div>
+    <p class="muted">Precios simples. Cancela cuando quieras.</p>
+    <div class="pricing__grid" style="margin-top:var(--space-3);">
+      <article class="plan" aria-label="Plan Starter">
+        <h3>Starter</h3>
+        <div class="price">0€<span class="muted">/mes</span></div>
+        <ul class="features-list">
+          <li>Hasta 100 acciones</li>
+          <li>1 dispositivo</li>
+          <li>Soporte por correo</li>
+        </ul>
+        <a class="btn btn--ghost" href="#">Empezar gratis</a>
+      </article>
+      <article class="plan" aria-label="Plan Pro" style="outline:2px solid var(--accent);">
+        <h3>Pro</h3>
+        <div class="price">9,99€<span class="muted">/mes</span></div>
+        <ul class="features-list">
+          <li>Acciones ilimitadas</li>
+          <li>Hasta 3 dispositivos</li>
+          <li>Soporte prioritario</li>
+        </ul>
+        <a class="btn btn--accent" href="#">Probar Pro</a>
+      </article>
+      <article class="plan" aria-label="Plan Empresa">
+        <h3>Empresa</h3>
+        <div class="price">A medida</div>
+        <ul class="features-list">
+          <li>SSO, controles de seguridad</li>
+          <li>Usuarios y roles</li>
+          <li>Soporte dedicado</li>
+        </ul>
+        <a class="btn btn--ghost" href="#">Hablar con ventas</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- ======================== TESTIMONIOS ======================== -
+  <section class="testimonials" id="testimonios" aria-label="opiniones de clientes">
+    <div class="container">
+      <div class="section-head"><h2 class="title-xl">Lo que dicen</h2><span></span></div>
+      <div class="quotes">
+        <blockquote class="quote"><p>“Instalé la app y en minutos ya estaba trabajando. Sencilla y muy rápida.”</p><footer>— Marta G.</footer></blockquote>
+        <blockquote class="quote"><p>“Soporte excelente y una interfaz que no estorba.”</p><footer>— Jon A.</footer></blockquote>
+        <blockquote class="quote"><p>“Pasamos al plan Pro el mismo día. Vale cada euro.”</p><footer>— Equipo C.</footer></blockquote>
+      </div>
+    </div>
+  </section>->
+
+  <!-- ======================== FAQ ======================== -->
+  <section class="faq container" id="preguntas">
+    <h2 class="title-xl">Preguntas frecuentes</h2>
+    <div class="faq__grid" aria-live="polite">
+      <div>
+        <details><summary>¿Cómo empiezo?</summary><p>Pulsa “Probar ahora” y crea tu cuenta. En menos de 60 segundos estarás dentro.</p></details>
+        <details><summary>¿Hay prueba gratuita?</summary><p>Sí, 14 días sin tarjeta. Cancela cuando quieras.</p></details>
+      </div>
+      <div>
+        <details><summary>¿Funciona sin conexión?</summary><p>La app guarda cambios localmente y sincroniza cuando vuelve la red.</p></details>
+        <details><summary>¿Qué soporte ofrecéis?</summary><p>Correo 24/7 y chat en horario laboral (CET).</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== CONTACTO ======================== -->
+  <section class="contact" id="contacto" aria-label="contacto">
+    <div class="container">
+      <div class="section-head"><h2 class="title-xl">¿Hablamos?</h2><span></span></div>
+      <div class="contact__grid">
+        <form class="form" onsubmit="return submitForm(event)">
+          <div class="field">
+            <label class="label" for="nombre">Nombre</label>
+            <input class="input" id="nombre" name="nombre" type="text" placeholder="Tu nombre" required minlength="2" />
+            <span class="error" id="err-nombre" hidden>Introduce al menos 2 caracteres.</span>
+          </div>
+          <div class="field">
+            <label class="label" for="email">Email</label>
+            <input class="input" id="email" name="email" type="email" placeholder="tucorreo@ejemplo.com" required />
+            <span class="error" id="err-email" hidden>Escribe un email válido.</span>
+          </div>
+          <div class="field">
+            <label class="label" for="tema">Interés</label>
+            <select class="select" id="tema" name="tema" required>
+              <option value="" disabled selected>Elige una opción</option>
+              <option value="demo">Quiero una demo</option>
+              <option value="precios">Dudas sobre precios</option>
+              <option value="soporte">Soporte técnico</option>
+            </select>
+            <span class="error" id="err-tema" hidden>Selecciona una opción.</span>
+          </div>
+          <div class="field">
+            <label class="label" for="mensaje">Mensaje</label>
+            <textarea class="textarea" id="mensaje" name="mensaje" placeholder="Cuéntanos brevemente en qué podemos ayudarte" required minlength="10"></textarea>
+            <span class="error" id="err-mensaje" hidden>Introduce al menos 10 caracteres.</span>
+          </div>
+          <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+            <button class="btn btn--accent" type="submit">Enviar</button>
+            <span id="formMsg" class="muted" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+        <aside class="card-side">
+          <h3>Información</h3>
+          <p class="muted">Correo: hola@tu-dominio.com<br/>Horario: L–V, 9:00–18:00 CET</p>
+          <p class="muted">Dirección: Calle Ejemplo 123, Madrid</p>
+          <hr style="border:none; border-top:1px solid var(--line); margin:16px 0;"/>
+          <h4>Boletín</h4>
+          <p class="muted">Recibe novedades (1 al mes, sin spam).</p>
+          <form class="form" onsubmit="return subscribe(event)">
+            <label class="visually-hidden" for="sub-email">Email</label>
+            <input class="input" id="sub-email" type="email" placeholder="tu@correo.com" required />
+            <button class="btn btn--ghost" type="submit">Suscribirme</button>
+            <span id="subMsg" class="muted" role="status" aria-live="polite"></span>
+          </form>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== FOOTER (diferenciado) ======================== -->
+  <footer role="contentinfo">
+    <div class="wrap">
+      <div class="container footgrid">
+        <div>
+          <div class="brand" style="margin-bottom:8px;">
+            <span class="brand__logo" aria-hidden="true"></span><span>Tu App</span>
+          </div>
+          <p style="color:#cbd5e1">Solución rápida y sencilla para tu día a día.</p>
+        </div>
+        <div>
+          <h4 style="margin:0 0 8px">Producto</h4>
+          <ul class="footlinks">
+            <li><a href="#como-funciona">Cómo funciona</a></li>
+            <li><a href="#caracteristicas">Características</a></li>
+            <li><a href="#precios">Precios</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="margin:0 0 8px">Legal</h4>
+          <ul class="footlinks">
+            <li><a href="#">Privacidad</a></li>
+            <li><a href="#">Términos</a></li>
+            <li><a href="#">Cookies</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="subfooter">
+      <div class="container" style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+        <p>© <span id="year"></span> Tu App</p>
+        <a href="#inicio" class="btn btn--inverted">Volver arriba ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Botón volver arriba flotante (móvil/escritorio) -->
+  <a href="#inicio" class="btn btn--accent toTop" id="toTop" aria-label="Volver arriba">↑</a>
+
+  <!-- ======================== JSON‑LD ======================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Tu App",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "iOS, Android, Web",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
+    "url": "https://www.tu-dominio.com/",
+    "description": "App sencilla y segura para tu día a día.",
+    "image": "https://www.tu-dominio.com/assets/og-image.jpg"
+  }
+  </script>
+
+  <script>
+    // Año dinámico
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ===== Menú móvil accesible =====
+    const toggle = document.querySelector('.nav__toggle');
+    const drawer = document.getElementById('drawer');
+    const overlay = document.getElementById('overlay');
+    const closeBtn = document.getElementById('closeDrawer');
+    const openDrawer = () => {
+      drawer.classList.add('is-open');
+      drawer.setAttribute('aria-hidden','false');
+      overlay.classList.add('is-open'); overlay.hidden = false;
+      toggle.setAttribute('aria-expanded','true');
+      document.body.style.overflow = 'hidden';
+      drawer.querySelector('a,button')?.focus();
+    };
+    const closeDrawer = () => {
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden','true');
+      overlay.classList.remove('is-open'); overlay.hidden = true;
+      toggle.setAttribute('aria-expanded','false');
+      document.body.style.overflow = '';
+      toggle.focus();
+    };
+    toggle?.addEventListener('click', openDrawer);
+    closeBtn?.addEventListener('click', closeDrawer);
+    overlay?.addEventListener('click', closeDrawer);
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && drawer.classList.contains('is-open')) closeDrawer(); });
+
+    // ===== Botón volver arriba =====
+    const toTop = document.getElementById('toTop');
+    addEventListener('scroll', () => {
+      const h = document.documentElement;
+      toTop.style.display = (h.scrollTop > 600) ? 'inline-flex' : 'none';
+    }, { passive:true });
+
+    // ===== Formularios (simulación front) =====
+    function submitForm(ev){
+      ev.preventDefault();
+      const f = ev.currentTarget;
+      const data = Object.fromEntries(new FormData(f).entries());
+      const show = (id, cond)=>{ const el = document.getElementById(id); el.hidden = cond; };
+      const okNombre = (data.nombre||'').trim().length >= 2;
+      const okEmail  = /.+@.+\..+/.test(data.email||'');
+      const okTema   = !!data.tema;
+      const okMsg    = (data.mensaje||'').trim().length >= 10;
+      show('err-nombre', okNombre); show('err-email', okEmail); show('err-tema', okTema); show('err-mensaje', okMsg);
+      const msg = document.getElementById('formMsg');
+      if(!(okNombre && okEmail && okTema && okMsg)){ msg.textContent = 'Revisa los campos en rojo.'; return false; }
+      msg.textContent = '¡Gracias! Te escribiremos en breve.';
+      f.reset();
+      return false;
+    }
+    window.submitForm = submitForm;
+
+    function subscribe(ev){
+      ev.preventDefault();
+      const email = document.getElementById('sub-email').value.trim();
+      const subMsg = document.getElementById('subMsg');
+      if(!/.+@.+\..+/.test(email)){ subMsg.textContent = 'Introduce un email válido.'; return false; }
+      subMsg.textContent = 'Te has suscrito correctamente.';
+      ev.currentTarget.reset();
+      return false;
+    }
+    window.subscribe = subscribe;
+
+    // ===== Palabra dinámica en el H1 =====
+    (function(){
+      const span = document.getElementById('changing-word');
+      if(!span) return;
+      const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+      const palabras = ['SEGURA','RÁPIDA','PRIVADA'];
+      let i = 0; let t;
+      const tick = ()=>{ i=(i+1)%palabras.length; span.style.opacity=0; setTimeout(()=>{ span.textContent = palabras[i]; span.style.opacity=1; }, 140); };
+      span.style.transition = 'opacity .25s ease';
+      if(!reduce){ t = setInterval(tick, 1800); }
+      window.addEventListener('beforeunload', ()=> clearInterval(t));
+    })();
+  </script>
+</body>
+</html>
